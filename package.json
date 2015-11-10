@@ -1,0 +1,30 @@
+{
+  "name": "user_docs",
+  "version": "0.0.1",
+  "description": "Documentation to be synced to kbase.us",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbase/user_docs.git"
+  },
+  "author": "KBase",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/kbase/user_docs/issues"
+  },
+  "homepage": "https://github.com/kbase/user_docs#readme",
+  "dependencies": {},
+  "devDependencies": {"bluebird": "3.0.5",
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "0.6.0",
+    "grunt-contrib-copy": "0.8.2",
+    "grunt-copy": "0.1.0",
+    "grunt-pandoc": "0.2.3",
+    "grunt-plugin-pandoc": "git+https://github.com/eapearson/grunt-plugin-pandoc.git",
+    "grunt-shell": "1.1.2",
+    "to-markdown": "2.0.1"
+  }
+}

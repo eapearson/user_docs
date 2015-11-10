@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>Metabolic Modeling FAQ</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+        <style type="text/css">
+            p {
+                text-indent: 0em;
+                margin: 1em 0 0 0;
+            }
+            h1 + p, h2 + p, h3 + p, h4 + p, h5 + p {
+                text-indent: 0;
+                margin-top: 0;
+            }
+
+            h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul {
+                text-indent: 0;
+                margin-top: 0;
+
+            }
+            p + h1, p + h2 {
+                margin-top: 1.5em;
+            }
+            h1, h2, h3, h4, h5, h6, h7 {
+                color: #6b844b;
+            }
+            h5, h5, h7 {
+                font-size: 100%;
+                text-decoration: underline;
+            }
+            h2, h3, h4, h5 {
+                margin: 16px 0 6px 0;
+            }
+            h2 {
+                padding-bottom: 4px; 
+                border-bottom: 2px rgba(107, 132, 75, 0.4) solid;
+            }
+            pre {
+                background-color: #FFF;
+                border-style: none;
+                padding: 0;
+            }
+            pre > code {
+                display: block;
+                margin: 1em 2em 1em 2em;
+                background-color: #f5f5f5;
+                border-radius: 4px;
+                border: 1px #ccc solid;
+                padding: 0.5em;
+            }
+            table  {
+                margin: 1em 0 1em 0;
+                border: 1px #ccc solid;        
+            }
+            table + h2 {
+                margin-top: 1.5em;
+            }
+            table tr {
+                border-bottom: 1px #ccc solid;
+
+            }
+            table tr:nth-child(0) {
+                border-bottom: 1px #000 solid;
+            }
+            table tr th {
+                padding: 4px;
+                border: 1px #ccc solid;
+            }
+            table tr td {
+                padding: 4px;
+                border: 1px #ccc solid;
+            }
+            img {
+                border: 1px silver solid;
+                box-shadow: 0 0 1em gray;
+                margin: 1em 10px 1.2em 0px;
+            }
+            
+            .kbase-doc .well {
+                padding: 1em;
+                margin: 0.5em 0;
+            }
+            .kbase-doc .well h2 {
+                margin: 0;
+                font-size: 120%;
+                font-weight: bold;
+            }
+            .well + h2 {
+                margin-top: 1.5em;
+            }
+            pre + h2 {
+                margin-top: 1.5em;
+            }
+        </style>
+    </head>
+    <body class="kbase-doc">
+        <div class="container-fluid" style="max-width: 1024px; margin: 0 auto 12px auto;">
+            <h1>Metabolic Modeling FAQ</h1>
+
+            <p>KBase has a suite of apps, methods, and data that support the reconstruction, prediction, and design of metabolic networks in microbes and plants. These tools could help advance, for example, efforts to optimize microbial production of a certain biofuel, find the minimal media conditions under which that fuel is generated, or predict soil amendments that improve the productivity of plant bioenergy feedstocks.</p>
+            <p>Below are answers to common questions about KBase's metabolic modeling tools, including:</p>
+            <ul>
+            <li><a href="#What-does-the-KBase-gapfilling-method-do">What does the KBase gapfilling method do?</a></li>
+            <li><a href="#How-does-the-underlying-gapfilling-algorithm-work">How does the underlying gapfilling algorithm work (i.e., what kind of programming formulation does it use)?</a></li>
+            <li><a href="#How-do-I-choose-a-media-condition-for-gapfilling">How do I choose a media condition for gapfilling, and what is the default media used?</a></li>
+            <li><a href="#How-can-I-see-the-compounds-comprising-a-media-used-in-gapfilling">How can I see the compounds comprising a media used in gapfilling?</a></li>
+            <li><a href="#How-can-I-download-all-the-biochemical-compounds-and-reactions-in-KBase">How can I download all the biochemical compounds and reactions in KBase?</a></li>
+            <li><a href="#Do-the-media-in-KBase-include-sources-other-than-carbon">Do the media in KBase include sources other than carbon (e.g., nitrogen, phosphorus, sulfur)?</a></li>
+            <li><a href="#How-can-I-specify-my-own-media">How can I specify my own media?</a></li>
+            <li><a href="#How-is-media-data-structured-in-KBase">How is media data structured in KBase?</a></li>
+            <li><a href="#How-can-I-determine-if-my-metabolic-model-will-grow-in-a-certain-media">How can I determine if my metabolic model will grow in a certain media?</a></li>
+            <li><a href="#After-running-flux-balance-analysis-what-does-the-sign-of-a-reaction-flux-mean">After running flux balance analysis, what does the sign of a reaction flux mean?</a></li>
+            <li><a href="#Can-I-customize-the-flux-boundaries-of-reactions-in-my-model">Can I customize the flux boundaries of reactions in my model?</a></li>
+            <li><a href="#How-can-I-edit-my-metabolic-model">How can I edit my metabolic model (add or delete reactions, compounds, or biomass)?</a></li>
+            <li><a href="#Why-did-gapfilling-fail-for-a-model-containing-a-custom-media-or-custom-biomass-reaction">Why did gapfilling fail for a model containing a custom media or custom biomass reaction? What can I do about it?</a></li>
+            <li><a href="#What-if-my-source-and-translated-metabolic-models-are-the-same">What if my source and translated metabolic models are the same after running the &quot;Propagate Genome-scale Model to Close Genome&quot; app?</a></li>
+            <li><a href="#What-do-the-Prediction-class-values-mean">What do the &quot;Prediction class&quot; values mean in the output table generated by the &quot;Simulate Growth on Phenotype Data&quot; method?</a></li>
+            <li><a href="#Why-did-I-get-false-negatives-after-simulating-growth">Why did I get false negatives after simulating growth, and what can I do about it?</a></li>
+            </ul>
+            <p>For more information—including descriptions of the underlying algorithms, inputs, and outputs—see the <a href="http://kbase.us/apps/">app and method</a> detail pages and <a href="http://kbase.us/tutorials/">tutorials</a> for the relevant apps and methods, which are linked below.</p>
+            <div class="well">
+            <h2>Metabolic Modeling Resources</h2>
+            <div class="row">
+            <div class="col-sm-7">
+            <p><strong>Microbial Metabolic Model Reconstruction and Analysis</strong></p>
+            <ul>
+            <li>Narrative tutorial (coming soon!)</li>
+            </ul>
+            <p><strong>Reconstruct Genome-scale Metabolic Model</strong></p>
+            <ul>
+            <li><a href="https://narrative.kbase.us/functional-site/#/narrativestore/app/build_fba_model">App details</a></li>
+            <li><a href="http://kbase.us/reconstruct-genome-scale-metabolic-model-app/">Tutorial</a></li>
+            </ul>
+            <p><strong>Propagate Genome-scale Model to Close Genome</strong></p>
+            <ul>
+            <li><a href="https://narrative.kbase.us/functional-site/#/narrativestore/app/fba_model_translation">App details</a></li>
+            <li><a href="http://kbase.us/propagate-genome-scale-model-to-close-genome-app/">Tutorial</a></li>
+            </ul>
+            <p><strong>Reconstruct Community Metabolic Model</strong></p>
+            <ul>
+            <li><a href="https://narrative.kbase.us/functional-site/#/narrativestore/app/community_fba_modeling">App details</a></li>
+            <li><a href="http://kbase.us/reconstruct-community-metabolic-model/">Tutorial</a></li>
+            </ul>
+            <p><strong>Build Plant Metabolic Model</strong></p>
+            <ul>
+            <li><a href="https://narrative.kbase.us/functional-site/#/narrativestore/app/build_plant_metabolic_model">App details</a></li>
+            <li><a href="http://kbase.us/build-plant-metabolic-model-app/">Tutorial</a></li>
+            </ul>
+            </div>
+            <div class="col-sm-5">
+            <p><strong>Run Flux Balance Analysis</strong></p>
+            <ul>
+            <li><a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/run_flux_balance_analysis">Method details</a></li>
+            <li><a href="http://kbase.us/run-flux-balance-analysis-method/">Tutorial</a></li>
+            </ul>
+            <p><strong>Simulate Growth on Phenotype Data</strong></p>
+            <ul>
+            <li><a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/simulate_growth_on_a_phenotype_set">Methods details</a></li>
+            <li><a href="http://kbase.us/simulate-growth-on-phenotype-data-method/">Tutorial</a></li>
+            </ul>
+            <p><strong>Compare Two Metabolic Models</strong></p>
+            <ul>
+            <li><a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/compare_two_metabolic_models_generic">Method details</a></li>
+            <li><a href="http://kbase.us/compare-two-metabolic-models-method/">Tutorial</a></li>
+            </ul>
+            <p><strong>Compare FBA solutions</strong></p>
+            <ul>
+            <li><a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/compare_fba_solutions">Method details</a></li>
+            </ul>
+            <p><strong>Gapfill Metabolic Models</strong></p>
+            <ul>
+            <li><a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/gapfill_a_metabolic_model">Method details</a></li>
+            </ul>
+            </div>
+            </div>
+            </div>
+            <h2 id="What-does-the-KBase-gapfilling-method-do">Q. What does the KBase gapfilling method do?</h2>
+            <p>Draft metabolic models lack a number of essential reactions due to missing or inconsistent annotations. Some of the most common problems arise from having missing transporters (reactions that move metabolites across cell membranes) because they are difficult to annotate well. Consequently, draft models often are unable to generate biomass on media where the organism typically is capable of growing.</p>
+            <p>The KBase gapfilling process compares the set of reactions in your metabolic model to a database of all known reactions and attempts to find a minimal set of reactions that, when added to your model, will allow it to grow. The set of reactions (known as the gapfilling solution) can then be integrated into your model, creating a new model capable of growth on the media used in the gapfilling process.</p>
+            <p>The gapfilling method uses a cost function associated with each internal reaction and transporter to find a solution that uses the fewest reactions to fill all gaps, and it does this without extra knowledge about the organism’s biochemistry.</p>
+            <p>For more information on gapfilling, see the <a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/gapfill_a_metabolic_model">method details page</a> and the Henry et al. 2010 <a href="http://www.nature.com/nbt/journal/v28/n9/full/nbt.1672.html">Model SEED paper</a> in Nature Biotechnology.  </p>
+            <h2 id="How-does-the-underlying-gapfilling-algorithm-work">Q: How does the underlying gapfilling algorithm work (i.e., what kind of programming formulation does it use)?</h2>
+            <p>At one time, KBase used a mixed-integer linear programming (MILP) formulation in gapfilling but replaced it with simple linear programming (LP), which minimizes the sum of flux through gapfilled reactions. From extensive experience with both formulations, KBase modeling experts have found that LP solutions are just as minimal as MILP solutions but require far less time to compute. In rare cases where an LP gapfilling would not be minimal, the lower wait time to obtain and adjust a new solution is typically worth a slightly larger solution.</p>
+            <p>The LP insists on using minimal flux, which almost always corresponds with minimal reactions in a stoichiometrically consistent database. In fact, inefficient solutions were more likely to result from the former MILP formulation because KBase sometimes would cut off the solver before an optimal solution was found in order to limit run-times to 24 hours.</p>
+            <p>In gapfilling, it is important to recognize that not all reactions are created equal. For example, transporters and non-KEGG reactions are penalized, along with reactions that have missing structures or unknown deltaG. To understand all the penalties, see the Henry et al. 2010 <a href="http://www.nature.com/nbt/journal/v28/n9/full/nbt.1672.html">Model SEED</a> paper in <em>Nature Biotechnology</em>.</p>
+            <p>The gapfilling method always has reasons for adding the reactions it does, but those reasons admittedly are not always obvious or biologically relevant. KBase is working on an algorithm that would provide detailed explanations of why each gapfilled reaction is added; we hope to make this feature available within the next few months.  </p>
+            <h2 id="How-do-I-choose-a-media-condition-for-gapfilling">Q: How do I choose a media condition for gapfilling, and what is the default media used?</h2>
+            <p>“Gapfilling” refers to choosing the minimal set of reactions to add to a draft metabolic model that will enable it to produce biomass in a specified media. KBase’s gapfilling method lets you set the media condition (i.e., the metabolites available in the environment in which you want to analyze the growth of your organism). For more information, see the <a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/gapfill_a_metabolic_model">Gapfilling </a><a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/gapfill_a_metabolic_model">method details page</a> and the previous question.</p>
+            <p>If you leave the Media field blank, “complete” media will be used by default. Complete media is a special type of media that does not include an exact list of compounds. Instead, complete media consists of all metabolites for which a transporter is available in the KBase biochemistry database. When used on complete media, the gapfilling method is not limited by the transport reactions already available in the model and therefore invariably will add more transport reactions to the model.</p>
+            <p>In addition to the default complete media, KBase provides more than 500 media conditions you can use for gapfilling. The <a href="http://kbase.us/narrative-guide/add-data-to-your-narrative/">Narrative Interface User Guide</a> describes how to add these media and other data to your Narrative. You can also <a href="http://kbase.us/data-upload-download-guide/media/">upload your own custom media condition</a>.</p>
+            <p>Choosing minimal media for the initial gapfilling is often a good idea because it ensures that the gapfilling algorithm will add the maximal set of reactions to the genome-inferred model. This will allow the model to biosynthesize many common substrates necessary for growth—substrates that otherwise would be present in the media. The gapfilling algorithm looks for incomplete metabolic pathways and tries to make an informed guess as to which protein-encoding genes may be responsible for the missing step in the pathway. This process works best when informed by the <em>a priori</em> knowledge that a particular organism can grow on a defined media type (e.g., a model of <em>Helicobacter pylori</em>, an endosymbiont, might require a media containing substrates it can’t biosynthesize <em>in vivo</em>.) Thus, specifying a growth media is beneficial.</p>
+            <p>Note that gapfilling runs can be stacked. That is, you can gapfill in complete media and then subsequently gapfill the model again in minimal media. The model will retain both gapfilling solutions. If you want to gapfill on the two media independently, be careful not to overwrite your original model during your gapfilling simulations and then use the same original model in both gapfilling runs.</p>
+            <p>The <a href="http://kbase.us/reconstruct-genome-scale-metabolic-model-app/">tutorial for the <em>Reconstruct Genome-scale Metabolic Model</em> app</a> explores the differences between two gapfilled solutions: one generated on complete media, and one generated on minimal media.  </p>
+            <h2 id="How-can-I-see-the-compounds-comprising-a-media-used-in-gapfilling">Q. How can I see the compounds comprising a media used in gapfilling?</h2>
+            <p>To see the list of media compounds for a particular model, open a viewer for the model by either clicking on its name in the Data Panel or dragging it from the panel and dropping it into the main Narrative window. Select the <em>Compounds</em> tab and filter by “e0” (extracellular compartment). This gives you a complete list of compounds transportable by your model.</p>
+            <p><a href="images/search-for-extracellular-compartment.png"><img src="images/search-for-extracellular-compartment.png" alt="Search for Extracellular Compartment" /></a>  </p>
+            <h2 id="When-viewing-a-model-what-do-the-compartment-IDs-mean">Q: When viewing a model, what do the compartment IDs mean?</h2>
+            <p>Compartments are the subcellular localization of compounds, enzymes, and reactions. The table below lists compartment abbreviations for microbes and plants.</p>
+            <p>Reactions and compounds belonging to each compartment are identified using compartment notation in square brackets after the five-digit reaction or compound ID (e.g., rxn00001[c0], cpd00001[c0]).</p>
+            <p>The integer associated with the compartment (e.g., the 0 in c0) represents the index number of the model. For a single-species model, this number will always be zero, but if individual models are merged into a community model, each sub-model will then be assigned a distinct index.</p>
+            <table>
+            <thead>
+            <tr class="header">
+            <th align="left">Compartment</th>
+            <th align="left">Microbes</th>
+            <th align="center">Plants</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="odd">
+            <td align="left">Cytosol (c)</td>
+            <td align="left">✓</td>
+            <td align="center">✓</td>
+            </tr>
+            <tr class="even">
+            <td align="left">Plastid (d)</td>
+            <td align="left"></td>
+            <td align="center">✓</td>
+            </tr>
+            <tr class="odd">
+            <td align="left">Extracellular (e)</td>
+            <td align="left">✓</td>
+            <td align="center">✓</td>
+            </tr>
+            <tr class="even">
+            <td align="left">Golgi apparatus (g)</td>
+            <td align="left"></td>
+            <td align="center">✓</td>
+            </tr>
+            <tr class="odd">
+            <td align="left">Mitochondria (m)</td>
+            <td align="left"></td>
+            <td align="center">✓</td>
+            </tr>
+            <tr class="even">
+            <td align="left">Nucleus (n )</td>
+            <td align="left"></td>
+            <td align="center">✓</td>
+            </tr>
+            <tr class="odd">
+            <td align="left">Periplasm (p)</td>
+            <td align="left">✓</td>
+            <td align="center"></td>
+            </tr>
+            <tr class="even">
+            <td align="left">Endoplasmic reticulum (r)</td>
+            <td align="left"></td>
+            <td align="center">✓</td>
+            </tr>
+            <tr class="odd">
+            <td align="left">Vacuole (v)</td>
+            <td align="left"></td>
+            <td align="center">✓</td>
+            </tr>
+            <tr class="even">
+            <td align="left">Cell wall (w)</td>
+            <td align="left"></td>
+            <td align="center">✓</td>
+            </tr>
+            <tr class="odd">
+            <td align="left">Peroxisome (x)</td>
+            <td align="left"></td>
+            <td align="center">✓</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2 id="How-can-I-download-all-the-biochemical-compounds-and-reactions-in-KBase">Q: How can I download all the biochemical compounds and reactions in KBase?</h2>
+            <p>The biochemistry compounds and reactions can be downloaded (as Excel spreadsheets) from <a href="ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry">ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry</a>.  </p>
+            <h2 id="Do-the-media-in-KBase-include-sources-other-than-carbon">Q: Do the media in KBase include sources other than carbon (e.g., nitrogen, phosphorus, sulfur)?</h2>
+            <p>Every KBase media has all the compounds necessary for minimal growth. In most cases the significant difference among media is the carbon source, which generally dictates the media’s name (e.g., “Carbon-D-Glucose”).  </p>
+            <h2 id="How-can-I-specify-my-own-media">Q: How can I specify my own media?</h2>
+            <p>You can generate and import your own media file by specifying the biochemical compounds found in a particular growth environment. Go to <a href="ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry">ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry</a> to see a list of all the biochemical compounds in KBase and find the IDs for those you wish to include in your custom media. Media can be uploaded as a TSV (tab-separated values) or Excel file with four columns:</p>
+            <ul>
+            <li>Compound identifier (e.g., ModelSEED ID, KEGG ID, PubChem ID, or compound name such as “glucose”)</li>
+            <li>Concentration (concentration of compound in M/L)</li>
+            <li>Min flux (minimum allowed uptake/excretion of compound)</li>
+            <li>Max flux (maximum allowed uptake/excretion of compound)</li>
+            </ul>
+            <p>Below is an example of a media file in TSV format. In this case, the compound IDs in the first column are ModelSEED IDs.</p>
+            <p><a href="media-file-output-tsv-format.png"><img src="images/media-file-output-tsv-format.png" alt="Media File Output TSV Format" /></a></p>
+            <p>Note that when creating a media Excel file, the name of the worksheet that contains your media conditions must be named “MediaCompounds” or it will not upload. To rename a worksheet, find the worksheet tabs at the bottom left of the Excel file. Double-click on the default name of the spreadsheet containing your custom media and name it “MediaCompounds.”</p>
+            <p><a href="images/media-compounds-tab-in-excel-spreadsheet.png"><img src="images/media-compounds-tab-in-excel-spreadsheet.png" alt="Media Compounds Tab in Excel Spreadsheet" /></a></p>
+            <p>The values in the “minflux” and “maxflux” columns are absolute units that represent the range of possible fluxes for reactions that transport the media compounds into and out of the cell. A negative flux value corresponds to excretion (transport out of the cell), and a positive flux value corresponds to uptake (transport into the cell).</p>
+            <p>The combination of maximum and minimum flux will dictate whether uptake and/or excretion of a reagent is allowed. Assigning a positive number to “minflux” for a particular compound essentially forces uptake of that compound. Conversely, assigning a negative number to “maxflux” will force excretion of the compound.</p>
+            <p>If you specify a range between “minflux” and “maxflux,&quot; then you will need to look at the list of “Exchange Fluxes” in the output after running flux balance analysis to observe what actually happened during the growth simulation.</p>
+            <p><a href="images/exchange-fluxes-data-viewer-tab.png"><img src="images/exchange-fluxes-data-viewer-tab.png" alt="Exchange Fluxes Data Viewer Tab" /></a></p>
+            <p>Please see the “Media” section of the Data Guide (<a href="http://kbase.us/data-upload-download-guide/media">http://kbase.us/data-upload-download-guide/media</a>) for more information on how to configure your media file.  </p>
+            <h2 id="How-is-media-data-structured-in-KBase">Q: How is media data structured in KBase?</h2>
+            <p>As with all KBase data types, the technical “spec” files of media data can be viewed at  <a href="https://narrative.kbase.us/functional-site/#/spec/storage/0">https://narrative.kbase.us/functional-site/#/spec/storage/0</a>.</p>
+            <p>From here, you can find details on the structure of media data in KBase by navigating the following path: “KBaseBiochem” → “Types”→ “Media” → “Spec file.” Scroll to the bottom of the media spec file to see the overall data structure, which should look like this:</p>
+            <pre><code>typedef structure {
+              media_id id;
+              string name;
+              source_id source_id;
+              string source;
+              string protocol_link;
+              bool isDefined;
+              bool isMinimal;
+              bool isAerobic;
+              string type;
+              string pH_data;
+              float temperature;
+              string atmosphere;
+              string atmosphere_addition;
+              list&lt;MediaReagent&gt; reagents;
+              list&lt;MediaCompound&gt; mediacompounds;
+            } Media;</code></pre>
+            <h2 id="How-can-I-determine-if-my-metabolic-model-will-grow-in-a-certain-media">Q. How can I determine if my metabolic model will grow in a certain media?</h2>
+            <p>Once you have built a metabolic model, you can perform flux balance analysis (FBA) to calculate the flow of metabolites through your model. FBA results can be used to predict the growth rate of an organism under certain conditions or the production rates for particular metabolites of interest.</p>
+            <p>To determine whether your organism grew in the media that you specified for FBA, find the <em>Overview</em> tab in the FBA results table. Among the summary information in this tab is the <strong>objective value</strong>. This value is is significant because it represents the maximum achievable flux through the biomass reaction of the metabolic model. An objective value of 0 (or something very close to 0) means that the model did not grow on the specified media.</p>
+            <p><a href="images/overview-tab-fba-results.png"><img src="images/overview-tab-fba-results.png" alt="Overview Tab in FBA Results Table" /></a></p>
+            <p>For more information on the “Run Flux Balance Analysis” method, see the <a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/run_flux_balance_analysis">method details page</a>.  </p>
+            <h2 id="After-running-flux-balance-analysis-what-does-the-sign-of-a-reaction-flux-mean">Q: After running flux balance analysis, what does the sign of a reaction flux mean?</h2>
+            <p>A positive flux value indicates that a reaction is proceeding from left to right as written in the equation, while a negative value indicates the reaction is running from right to left. For example, the following table shows a portion of the <em>“Reaction fluxes”</em> tab from the output of the “<a href="http://kbase.us/run-flux-balance-analysis-method/">Run Flux Balance Analysis</a>” method. Here, the positive flux in the “Flux” column indicates that rxn00543 is proceeding from left to right—that is, ethanol is being oxidized to acetaldehyde.</p>
+            <table>
+            <thead>
+            <tr class="header">
+            <th align="left"><strong>Reaction</strong></th>
+            <th align="left"><strong>Name</strong></th>
+            <th align="left"><strong>Flux</strong></th>
+            <th align="left"><strong>Min flux (Lower bound)</strong></th>
+            <th align="left"><strong>Max flux (Upper bound)</strong></th>
+            <th align="left"><strong>Class</strong></th>
+            <th align="left"><strong>Equation</strong></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="odd">
+            <td align="left">rxn00543[c0]</td>
+            <td align="left">Ethanol-NAD oxidoreductase</td>
+            <td align="left">100</td>
+            <td align="left">-100 (-1000) </td>
+            <td align="left">100 (1000) </td>
+            <td align="left">Variable</td>
+            <td align="left">NAD[c0] + Ethanol[c0] &lt;=&gt; Acetaldehyde[c0] + NADH[c0] + H+[c0]</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>The “Min flux,” “Max flux,” and “Class” columns show that other valid FBA solutions for the model have flux values for rxn00543 that range from -100 to 100. This reaction therefore is classified as “Variable” because it can proceed in either direction.  </p>
+            <h2 id="Can-I-customize-the-flux-boundaries-of-reactions-in-my-model">Q: Can I customize the flux boundaries of reactions in my model?</h2>
+            <p>To constrain the flux of a reaction, you can export your model, edit it, and re-import it.</p>
+            <p>Alternatively, in the case of a transport reaction, you can change the uptake of a media compound by editing the media object itself. For example, setting the maximum flux of any media compound to zero (or a small number) will prevent its uptake. This is contingent, of course, on the media itself being defined, so if you performed gapfilling on the default complete media, you will have to re-gapfill on an actual defined media object of your choice.</p>
+            <p>Also, in the “<a href="http://kbase.us/run-flux-balance-analysis-method/">Run Flux Balance Analysis</a>” method, you can change the “bounds” on a specific reaction to whatever you want using the “Custom flux bounds” field under advanced options: <a href="images/advanced-options-flux-balance-analysis.png"><img src="images/advanced-options-flux-balance-analysis.png" alt="Advanced Options for Flux Balance Analaysis" /></a> Note that the help text next to the custom flux field provides an example of the proper format for setting bounds:</p>
+            <ul>
+            <li>Specify a number for the lower bound (e.g. &quot;0&quot;)</li>
+            <li>Insert a semicolon (no spaces!)</li>
+            <li>Type in the reaction ID or compound ID</li>
+            <li>Insert another semicolon</li>
+            <li>Specify a number for the upper bound (e.g. &quot;5&quot;)</li>
+            </ul>
+            <p>So to set &quot;rxn00006&quot; at a flux of &quot;5,&quot; you would set this custom bound: 5;rxn00006;5.  </p>
+            <h2 id="How-can-I-edit-my-metabolic-model">Q. How can I edit my metabolic model (add or delete reactions, compounds, or biomass)?</h2>
+            <p>The KBase team is working to incorporate built-in capabilities for editing metabolic models within the Narrative Interface. For now, you can adjust your model by running scripts in a code cell. To add a code cell to your Narrative, click the “&gt;_” icon at the bottom right of the Narrative screen.</p>
+            <div class="figure">
+            <img src="images/code-cell-icon.png" alt="Code Cell Icon" /><p class="caption">Code Cell Icon</p>
+            </div>
+            <p>Instructions and example scripts for editing the reactions, compounds, and biomass in your model are available in the “<a href="https://narrative.kbase.us/narrative/ws.7924.obj.1">Manipulating Metabolic Models in Narrative</a>” tutorial. Another way to adjust your model is to download it from KBase, edit the file, and then re-import it.  </p>
+            <h2 id="Why-did-gapfilling-fail-for-a-model-containing-a-custom-media-or-custom-biomass-reaction">Q: Why did gapfilling fail for a model containing a custom media or custom biomass reaction? What can I do about it?</h2>
+            <p>If the “<a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/gapfill_a_metabolic_model">Gapfill Metabolic Model</a>” method fails with custom media, first check whether the compound that you are gapfilling for is already available in the reconstructed model. (See instructions for viewing model compounds above.)</p>
+            <p>If the compound is not in the model, it may be rare or uncommon. Check KBase’s reference biochemistry database  (<a href="ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry">ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry</a>) to ensure that:</p>
+            <ul>
+            <li>The compound is actually available in KBase’s biochemistry collection.</li>
+            <li>There are reactions that involve the compound in question.</li>
+            <li>There are exchange reactions (transporters) that would enable the compound to be consumed from the media.</li>
+            </ul>
+            <p>To help mitigate this issue, the “Gapfill Metabolic Model” method includes a field for “Source Gapfill Model” under the advanced options. You can specify a source model to supply reactions missing from the KBase database that might prevent the gapfilling from working successfully. If your biomass reaction is from an existing published model, you should import this model and use it as a source database for your gapfilling (because that model should contain all reactions needed to grow on its own biomass reaction). The source model simply supplements the KBase database, which still will be used in gapfilling.Successfully running the gapfilling method with a custom biomass reaction depends on whether the custom biomass includes compounds that can be produced given all the balanced, approved reactions in the KBase database. For now, non-standard compartments for biomass components may also be a problem.</p>
+            <p>KBase uses a biochemistry database that includes all ModelSEED reactions, and some additional reactions (this database can be downloaded from <a href="ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry">ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry</a>). However, the gapfilling is restricted to a subset of the reactions in the database. First and foremost, KBase filters out imbalanced reactions from gapfilling because they cause mass leakage and a bad gapfilling solution. We also filter out several reactions that cause problems in gapfilling due to strange formulations (e.g., reactions containing lumped or undefined compounds).  </p>
+            <h2 id="What-if-my-source-and-translated-metabolic-models-are-the-same">Q: What if my source and translated metabolic models are the same after running the “<a href="http://kbase.us/propagate-genome-scale-model-to-close-genome-app/">Propagate Genome-scale Model to Close Genome</a>” app?</h2>
+            <p>This app builds a new metabolic model by translating the gene associations in an existing model to a new genome. This translation is conducted based on gene correspondence tables contained in a proteome comparison object generated in Step 1 of the app. A gapfilling is performed to permit the translated model to grow on a specific media. More information on the model translation step can be found on the <a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/translate_model_to_new_genome">details page</a>.</p>
+            <p>If the translated model resulting from this app is the same as your source model, run through the following checks:</p>
+            <ul>
+            <li><strong>Make sure the reactions in the source model have genes associated with them.</strong> If they don’t, then the source and translated models will be the same because reactions with no genes are automatically retained in the model propagation process. For this reason, it is very important to associate a genome with your model when you import it. It is equally important that the gene IDs in this associated genome match the gene IDs mapped to the reactions in your imported model <strong>exactly</strong>. Otherwise, the genes in the genome will not be properly mapped to the reactions in the model. This proper mapping is absolutely essential for apps such “Propagate Genome-scale Model to Close Genome” to work.</li>
+            <li><strong>Look at the proteome comparison object.</strong> How different are the genomes that are being compared? How many hits are there? If the genomes are very close, the source and translated model could end up being the same. Such a result is unlikely but not impossible.</li>
+            <li><strong>Check the translated model before gapfilling.</strong> Did you lose some reactions only to have them added back in the gapfilling process?</li>
+            </ul>
+            <h2 id="What-do-the-Prediction-class-values-mean">Q: What do the “Prediction class” values mean in the output table generated by the “Simulate Growth on Phenotype Data” method?</h2>
+            <p>The “<a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/simulate_growth_on_a_phenotype_set">Simulate Growth on Phenotype Data</a>” method performs multiple flux balance analyses (FBA) using each media condition in a phenotype dataset and compares the results, which are listed as &quot;Observed normalized growth&quot; (experiments done in a laboratory) vs. &quot;Simulated growth&quot; (simulation of FBA on the model). You can see these results in the <em>Phenotypes</em> tab of the output cell:</p>
+            <p><a href="images/phenotypes-tab-stimulate-growth-on-phenotype-data-output.png"><img src="images/phenotypes-tab-stimulate-growth-on-phenotype-data-output.png" alt="Phenotypes Tab in Simulate Growth on Phenotype Data Output" /></a></p>
+            <p>In the “Prediction class” column, simulated growth results against observed growth are represented in four classes:</p>
+            <table>
+            <tbody>
+            <tr class="odd">
+            <td align="left"><strong>CP</strong></td>
+            <td align="left">Correct positive (model was predicted to grow, and did)</td>
+            </tr>
+            <tr class="even">
+            <td align="left"><strong>CN</strong></td>
+            <td align="left">Correct negative (model was predicted not to grow, and did not)</td>
+            </tr>
+            <tr class="odd">
+            <td align="left"><strong>FP</strong></td>
+            <td align="left">False positive (model was predicted to grow, but it did not)</td>
+            </tr>
+            <tr class="even">
+            <td align="left"><strong>FN</strong></td>
+            <td align="left">False negative (model was predicted not to grow, but it did)  </td>
+            </tr>
+            </tbody>
+            </table>
+            <h2 id="Why-did-I-get-false-negatives-after-simulating-growth">Q: Why did I get false negatives after simulating growth, and what can I do about it?</h2>
+            <p>False negative (FN) results from the “<a href="https://narrative.kbase.us/functional-site/#/narrativestore/method/simulate_growth_on_a_phenotype_set">Simulate Growth on Phenotype Data</a>” method mean that the model is not able to grow on laboratory-tested media conditions. The most likely explanation for a FN prediction is that the model is missing reactions required for viable growth in the specified media conditions (e.g., no asparagine metabolism pathway in a media where asparagine is the only carbon source). This error can be corrected by gapfilling the model on that media to add a minimal set of reactions to the model such that growth is permitted.  </p>
+            <hr />
+            <p>We welcome your <a href="http://kbase.us/contact-us">feedback</a> on the information provided in this FAQ. If you have a question about the metabolic modeling tools and data in KBase that is not answered here, or the answer provided didn't work for you, please <a href="http://kbase.us/contact-us">contact us</a>.</p>
+        </div>
+    </body>
+</html>
