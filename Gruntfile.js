@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -10,6 +10,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-plugin-pandoc');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-connect');
+    grunt.loadNpmTasks('grunt-open');
+
 
     // Project configuration.
     grunt.initConfig({
@@ -40,7 +43,7 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-        },       
+        },
         plugin_pandoc: {
             build: {
                 options: {
@@ -54,9 +57,24 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-        }
+        },
+        connect: {
+           server: {
+               port: 8887,
+               base: 'build',
+               keepalive: false,
+               onCreateServer: function (server, connect, options) {
+                   console.log('created...');
+               }
+           }
+       },
+       open: {
+           dev: {
+               path: 'http://localhost:8887'
+           }
+       },
     });
-    
+
     //grunt.registerTask('clean', [
     //    'clean:build'
     //]);
@@ -64,5 +82,10 @@ module.exports = function (grunt) {
         'copy:build',
         'plugin_pandoc:build',
         'clean:markdown'
+    ]);
+
+    grunt.registerTask('preview', [
+        'open:dev',
+        'connect'
     ]);
 };
