@@ -57,9 +57,9 @@ Each of the main prerequisites can be downloaded and installed as regular Mac in
 
 #### Macports
 
-Macports is a project to provide Linux / Unix packages to the Macintosh user community. It installs all packages into /opt/local.
+Macports provides Linux / Unix packages to the Macintosh user community. It installs all packages into ```/opt/local```.
 
-Note: There are other package managers, such as Homebrew. You should not mix two or more package managers on the same system, as they will install their packages in different locations, and you may end up with some packages from one system, and some from another. This can lead to all sorts of headaches, so choose wisely!
+> Note: Multiple package managers should not be used at the same time. Other package managers, such as Homebrew, install their packages in different locations, and you may end up with some packages from one package manager, and some from another. This can lead to all sorts of headaches, so choose wisely!
 
 Macports requires the Mac Xcode developer tools. Although Macports can install binary packages, it prefers to build packages source code. This can take a long time, so don't be surprised if some things take over an hour to install the first time.
 
@@ -128,28 +128,37 @@ That is it for the prerequisites.
 [ to be done ]
 
 
-## Fork the user_docs Repo (optional)
+## Working with user_docs
 
-If you are going to be editing the documentation, you should fork the doc repo first. At KBase, we prefer to use the Fork-Pull method for contributions to a KBase repo. This means that you should fork the user_doc repo, and then clone your fork to your workstation.
+To work with user_docs, you will first need to install it on your workstation. How you work with user_docs depends on your choice of tools.
 
-If you are using Github Desktop, this can be managed from there without visiting the github web site or using the command line.
+In this document we present two pathways:
+
+- using command line tools and the web browser, 
+- using Github Desktop and Atom
+
+### Command Line - for the brave of heart
+
+#### Fork the user_docs Repo (optional)
+
+If you are going to be editing the documentation, you should fork the doc repo first. At KBase, we prefer to use the Fork-Clone-Push-Pull method for contributions to a KBase repo. This means that you should fork the user_doc repo, and then clone your fork to your workstation, push updates back to your own github repo, and then issue a pull request (PR) to have your changes merged into the kbase repo.
+
+This step is not actually doable from the command line. You need to visit the github web service and use the tools there.
 
 [ to be done: forking instructions ]
 
-## Clone the user_docs repo
+#### Clone the user_docs repo
 
 Either from the KBase repo, https://github.com/kbase/user_docs.git, or your own personal repo, or that of a colleague, you will need to clone the repo to your workstation.
 
-### Using the command-line tools
-
-#### 1) Create a project directory
+- Create a project directory
 
 This directory will contain the user_docs repo. E.g.
 
 - open Terminal
 - ```mkdir -p projects/UserDocs```
 
-#### 2) Clone the user_docs repo in that directory
+- Clone the user_docs repo in that directory
 
 For example, assuming that you have forked user_docs and your github account is *youraccount*:
 
@@ -158,34 +167,7 @@ cd projects/UserDocs
 git clone https://github.com/youraccount/user_docs.git
 ```
 
-
-### Github Desktop and Atom
-
-Github Desktop and Atom make a great combination for the entire *user_docs* workflow.
-
-In case you don't have them, these tools are available from:
-
-- [Github Desktop](https://desktop.github.com)
-- [Github Atom](https://atom.io/)
-
-#### Github Desktop
-
-- install
-- configure on first time opening
-  - advise to create Documents/GithubRepos to hold, er, github repos - by default Github Desktop wants to put them into your account root folder.
-- File > Clone Repository or use the various other controls to search for and select the user_docs repo.
-  - can clone directly from there, or select kbase/user_docs if don't need to editing
-- right click on the user_docs repo in the main window and then "Open in Atom".
-
-#### Github Atom
-
-- recommended plugins:
-  -
-
-
-## Building
-
-### Command Line
+#### Building
 
 While still in Terminal
 
@@ -213,13 +195,38 @@ grunt preview
 
 Note that this last step can also be replaced by pointing your web browser to user_docs/build/index.html
 
-### Building Github Desktop and Atom
 
-- right click on the repo, and select Open in Atom
-- install some required plugins
+### Github Desktop and Atom
+
+Github Desktop and Atom make a great combination for the entire *user_docs* workflow.
+
+In case you don't have them, these tools are available from:
+
+- [Github Desktop](https://desktop.github.com)
+- [Github Atom](https://atom.io/)
+
+#### Github Desktop
+
+- install
+- configure on first time opening
+  - advise to create Documents/GithubRepos to hold, er, github repos - by default Github Desktop wants to put them into your account root folder.
+- File > Clone Repository or use the various other controls to search for and select the user_docs repo.
+  - can clone directly from there, or select kbase/user_docs if don't need to editing
+- right click on the user_docs repo in the main window and then "Open in Atom".
+
+#### Github Atom
+
+- recommended plugins:
+- install required plugins
   - terminal-plus
   - pandoc
   - pandoc-convert
+
+
+### Building Github Desktop and Atom
+
+- right click on the repo, and select Open in Atom
+
 - open the terminal
 
 I tried the grunt integration plugins, and none of them worked very well. The *terminal-plus* plugin works just fine, even if pushing a button would be slightly easier.
